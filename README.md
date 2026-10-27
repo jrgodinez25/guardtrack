@@ -1,40 +1,33 @@
 # GuardTrack — Security Guard Tracking & Monitoring Prototype
 
-GuardTrack is a browser-based demonstration dashboard for security agency dispatchers. It includes a Leaflet deployment map, guard directory, status filters, activity feed, simulated patrol controls, checkpoint logging, and SOS alert workflow.
+## Authentication demo (static hosting)
 
-> **Safety notice:** This is a prototype. GPS positions, patrols, checkpoint scans, and SOS actions are simulated in the browser. It does not track real people or contact emergency services. Do not use it for operational dispatch or life-safety decisions.
+- Sign-in page: `login.html`
+- Admin demo: `admin@guardtrack.com` / `admin123`
+- Guard demo: `guard.juan@guardtrack.com` / `guard123`
+- Admins are routed to `index.html`; guards are routed to `guard.html`.
+- The browser remembers the session with localStorage when **Remember me** is checked, or sessionStorage for a tab-only session.
+- Log out from the profile menu to clear both session keys.
 
-## Files
+The demo account list is initialized in localStorage under `guardtrack.demoAccounts` so the sample accounts can be tested without a backend. The account passwords and session data are browser-side demonstration data, not secure credential storage.
 
-- `index.html` — application shell and simulator dialog
-- `css/styles.css` — responsive dashboard styles
-- `js/data.js` — seeded site data
-- `js/map.js` — Leaflet map and marker rendering
-- `js/app.js` — UI state, simulation, activity feed, and local persistence
+## Important security limitation
 
-## Run locally
+**This is client-side demo RBAC, not production security.** GitHub Pages only serves static files. A user can inspect or modify JavaScript and localStorage, so these checks cannot securely protect privileged data or prove a user's identity. Do not use real credentials or sensitive operational information with this demo.
 
-ES modules require an HTTP server. From the repository root:
-
-```bash
-python -m http.server 8080
-```
-
-Then open http://localhost:8080. An internet connection is required for Tailwind, Leaflet, Google Fonts, and OpenStreetMap tiles. No build step or API key is required.
+For production, use a trusted identity provider or backend authentication, secure server-side role checks for every protected API/resource, HTTPS, short-lived sessions, secure cookie handling where applicable, password hashing, audit logs, rate limiting, and account recovery/MFA. Do not rely on a role selector or browser storage to authorize access.
 
 ## Features
 
-- Status KPIs and directory search/filtering
-- Map markers for active, idle, alert, and offline guards
-- Simulated patrol start/end and movement
-- Simulated checkpoint check-in and emergency SOS
-- Activity feed, reset control, and browser localStorage persistence
-- Responsive layout for desktop and mobile
+- Admin command dashboard with map, KPIs, directory, and alerts
+- Guard-only mobile console for simulated patrols, checkpoint check-ins, and SOS
+- Login, Remember Me, profile initials/role, and logout
+- Local-only simulated GPS and event data
+
+## Run locally
+
+Serve the root folder with `python -m http.server 8080` and visit `http://localhost:8080/login.html`. The app needs internet access for Tailwind, Leaflet, fonts, and map tiles.
 
 ## GitHub Pages
 
-Open **Settings → Pages**, choose **Deploy from a branch**, select `main` and `/(root)`, then save. After GitHub Pages finishes publishing, the app should be available at `https://jrgodinez25.github.io/guardtrack/`.
-
-## Production considerations
-
-A real deployment needs authenticated users, role-based authorization, a secure backend/database, real device enrollment and GPS permission, validated QR/NFC tokens, audit logging, escalation rules, privacy notices and retention controls, monitoring, backups, security testing, and compliance with applicable Philippine privacy and labor requirements. Browser localStorage is not suitable for sharing sensitive live operations across dispatchers.
+Select `main` and `/(root)` in **Settings → Pages**. The site should be available at `https://jrgodinez25.github.io/guardtrack/login.html`.
